@@ -3,6 +3,9 @@
 #include <fstream>
 #include <queue>
 #include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+
 
  using namespace std;
 
@@ -58,35 +61,94 @@ int main(int argc, char *argv[]) {
  //   int halfcycles= numprocs/2;
     //if(myid == 0) cout<<oddlimit<<":"<<evenlimit<<endl;
 
+   // tvorba pole obsahujici indexy zacatku pracovani procesoru
+   int *index;
+   index = (int*) malloc(numprocs*sizeof(int));
+   int j = 1;
+   for(int i = 0; i < numprocs; i++, j++) {
+      index[i] = (2 << (i-1)) +j-1;
+      cout << i << ":" << index[i] << ", ";
+   }
+   cout << endl;
    queue<int16_t> que1;                                                              // fronta cisel o velikosti 8bitu
    queue<int16_t> que2;                                                              // fronta cisel o velikosti 8bitu
    bool firstQue = false;
     //RAZENI-------------------------------------------------------------------
     //cyklus pro linearitu
 
-   for(int j=0; j<8; j++){
+   int cmp = 0;
+   bool cmpQue1 = true;
+   for(int j=0; j<55; j++){
        // posilam cislo ze zacatku fronty procesoru vedle        
       if(myid == 0) {
-         mynumber = numbers.front();
-         numbers.pop();
-         cout<< "posilam:"<<mynumber<<endl;
-         MPI_Send(&mynumber, 1, MPI_INT, myid+1, TAG, MPI_COMM_WORLD);          //poslu sousedovi svoje cislo
-      }
-      if((myid != 0) && (j%(myid)) == 0) {
-         firstQue = !(firstQue && firstQue);
-         cout<<firstQue<<endl;
-      }
-      if(myid == 1) {
-         MPI_Recv(&neighnumber, 1, MPI_INT, myid-1, TAG, MPI_COMM_WORLD, &stat); //prijimam
-      }
-      // pridani cisla do spravne fronty
-      if(firstQue) {
-         que1.push(neighnumber);
-         cout << "prvni"<<myid<<endl;
+         if((numbers.size()-1) != 0) {
+            mynumber = numbers.front();
+            numbers.pop();
+            cout<< "posilam:"<<mynumber<<endl;
+            MPI_Send(&mynumber, 1, MPI_INT, myid+1, TAG, MPI_COMM_WORLD);          //poslu sousedovi svoje cislo
+         }
+         else {
+            exit(0);
+         }
       }
       else {
-         cout << "druha"<< myid<<endl;
-         que2.push(neighnumber);
+         if((j%(myid)) == 0) {
+            firstQue = !(firstQue && firstQue);
+            cout<<firstQue<<endl;
+         }
+
+         // prijimani prvku od vedlejsiho procesoru
+         if(j >= index[myid-1]) {
+            MPI_Recv(&neighnumber, 1, MPI_INT, myid-1, TAG, MPI_COMM_WORLD, &stat); //prijimam
+            cout << "prijal proc id :" << myid << " -> " << neighnumber << " , od id = " << myid-1 << endl;
+         }
+
+         // pridani cisla do spravne fronty
+         if(firstQue) {
+            que1.push(neighnumber);
+            cout << "prvni"<<myid<<endl;
+         }
+         else {
+            cout << "druha"<< myid<<endl;
+            que2.push(neighnumber);
+         }
+         // porovnani prvku ve forntach a poslani mensi vedlejsimu cpu
+         if(j >= (index[myid]-1)) {
+            //porovnat nebo poslat minule porovnny prvek
+            if(cmp < myid) {       
+               // porovnani prvku
+               cout << ".. porovnavam " << que1.front() << ":" << que2.front() << endl;
+               if(que1.front() >= que2.front()) {
+                  mynumber = que2.front();
+                  que2.pop();
+                  cmpQue1 = true;                                                      // prvek se bral z druhe fronty, dalsi pripadne z prvni
+               }
+               else {
+                  mynumber = que1.front();
+                  que1.pop();
+                  cmpQue1 = false;                                                     // prvek se bral z prvni fronty
+               }
+               cmp++;
+            }
+            else {
+               if(cmpQue1) {
+                  mynumber = que1.front();
+                  que1.pop();
+               }
+               else {
+                  mynumber = que2.front();
+                  que2.pop();
+               }
+               cmp = 0;
+            }
+            cout << "posilam cislo :" << mynumber << endl;
+            if(myid != (numprocs-1)) {
+               MPI_Send(&mynumber, 1, MPI_INT, myid+1, TAG, MPI_COMM_WORLD);          //poslu sousedovi svoje cislo
+            }
+            else {
+               cout << mynumber;
+            }
+         }
       }
    }
        /*
