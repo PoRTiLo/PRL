@@ -39,21 +39,30 @@ int main(int argc, char *argv[]) {
       int16_t number;                                                                   // hodnota pri nacitani souboru
       fstream fin;                                                                       // cteni ze souboru
       fin.open(input, ios::in);                                                          // otevreni souboru pro cteni
-
+      int i = 0;
+      queue<int16_t> pomNumbers;                                                              // fronta cisel o velikosti 8bitu
       while(fin.good()) {                                                                // prochazim soubro dokud nejsu na konci
          number = fin.get();                                                             // nacitani po znaku - 8bite
          if(!fin.good()) {                                                               // nactenmi EOF
             break;                                                                       // nacte i eof, takze vyskocim
          }
-         cout << number <<endl;
-         numbers.push(number);                                                           // ulozeni cisla do fronty
+//         cout << number <<endl;
+         pomNumbers.push(number);                                                           // ulozeni cisla do fronty
+         i++;
       }
-      fin.close();                                                                       // uzavreni souboru       
+      fin.close();                                                                       // uzavreni souboru
+      for(;i>0;i--) {
+         cout << pomNumbers.front() << " ";
+         numbers.push(pomNumbers.front());
+         pomNumbers.pop();
+      }
+      cout << endl;
+
    }
    // tvorba pole obsahujici indexy zacatku pracovani procesoru
    int start = (1 << myid) + myid -1;
    int startPrev = (1 << (myid-1)) + myid-1 -1;
-   cout << "nnnnnnnnnnn" << myid << ":" <<startPrev<< "->end : "<<start<<endl;
+//   cout << "nnnnnnnnnn" << myid << ":" <<startPrev<< "->end : "<<start<<endl;
    int end = (1 << (numprocs-1))-1 + (1 << myid) + myid;
    int endPre;
    int endSort = 0;
@@ -64,7 +73,7 @@ int main(int argc, char *argv[]) {
       endPre = (1 << (numprocs - 1)) - 1 + (1 << (myid - 1)) + myid - 1;
    }
    endSort =  (1 << (numprocs - 1)) + (1 << numprocs) + numprocs - 1;
-   cout << "///////////" << myid << ":" <<endPre<< "->end : "<<end<<endl;
+//   cout << "///////////" << myid << ":" <<endPre<< "->end : "<<end<<endl;
     
    queue<int16_t> que1;                                                              // fronta cisel o velikosti 8bitu
    queue<int16_t> que2;                                                              // fronta cisel o velikosti 8bitu
@@ -81,13 +90,16 @@ int main(int argc, char *argv[]) {
    int change = 0;
    int printNum = 0;
    int pom = (1 << (numprocs-1));
-   for(int j = 0; printNum != pom; j++) {
+   int endAlg = 2*pom + (numprocs -1) -1;
+//   cout << endAlg <<endl;
+   //for(int j = 0; printNum != pom; j++) {
+   for(int j = 0; j <= endAlg; j++) {
       if(myid == 0) {                                                                                    // prvni CPU, posila prvky ze vstupni fronty
          if(!numbers.empty()) {                                                                          // dokud neni fronta prazdna
             mynumber = numbers.front();                                                                  // prvni prvek z fronty
             numbers.pop();                                                                               // odebrani prvku z fronty
             MPI_Send(&mynumber, 1, MPI_INT, myid+1, TAG, MPI_COMM_WORLD);                                // poslu sousedovi svoje cislo
-            cout << j << "-id: " << myid << " -> " << mynumber << "\tto id: " << myid+1 << endl;
+//            cout << j << "-id: " << myid << " -> " << mynumber << "\tto id: " << myid+1 << endl;
          }
          else {                                                                                          // jiz neni co posilat
             //TODO:zastavit? uz nema co delat
@@ -105,11 +117,11 @@ int main(int argc, char *argv[]) {
             // pridani cisla do spravne fronty
             if(firstQue) {
                que1.push(neighnumber);
-               cout << j << "-id: " << myid << " <- " << neighnumber << "\tfrom id: " << myid-1 << " in to : 1" << endl;
+//               cout << j << "-id: " << myid << " <- " << neighnumber << "\tfrom id: " << myid-1 << " in to : 1" << endl;
             }
             else {
                que2.push(neighnumber);
-               cout << j << "-id: " << myid << " <- " << neighnumber << "\tfrom id: " << myid-1 << " in to : 2"<<endl;
+//               cout << j << "-id: " << myid << " <- " << neighnumber << "\tfrom id: " << myid-1 << " in to : 2"<<endl;
             }
          }
          // porovnani prvku ve forntach a poslani mensi vedlejsimu cpu
@@ -117,7 +129,7 @@ int main(int argc, char *argv[]) {
             //porovnat nebo poslat minule porovnny prvek
             if(cmp < cmpX || myid == (numprocs-1)) {       
                // porovnani prvku
-               cout << j << "-id: "<< myid << " compare  " << que1.front() << ":" << que2.front() << endl;
+//               cout << j << "-id: "<< myid << " compare  " << que1.front() << ":" << que2.front() << endl;
                // pokud je fronta prazdna kopiruji z druhe
                if(myid == (numprocs-1) && (que1.empty()||que2.empty())) {                  // uz je vse hotove, jedna rada prazdna taj zbytek vytisknu
                   if(que1.empty()) {;
@@ -167,24 +179,25 @@ int main(int argc, char *argv[]) {
                   mynumber = que2.front();
                   que2.pop();
                }
-                  cout<< "zde"<<endl;
+ //                 cout<< "zde"<<endl;
                cmp = 0;
                numQ1 = numQ;
                numQ2 = numQ;
             }
-            cout << j << "-id: " << myid << " -> " << mynumber << "\tto id: " << myid+1 << endl;
+//            cout << j << "-id: " << myid << " -> " << mynumber << "\tto id: " << myid+1 << endl;
             if(myid != (numprocs-1)) {
                MPI_Send(&mynumber, 1, MPI_INT, myid+1, TAG, MPI_COMM_WORLD);          //poslu sousedovi svoje cislo
             }
             else {
-               cout << j << "-...................................." << mynumber <<endl;
+//               cout << j << "-...................................." << mynumber <<endl;
+               cout << mynumber <<endl;
                printNum++;
             }
          }
       }
    }
-                  cout<<"konec"<<endl;
     MPI_Finalize(); 
+//                  cout<<"konec"<<endl;
     return 0;
 
  }//main
