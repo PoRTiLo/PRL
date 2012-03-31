@@ -1,0 +1,159 @@
+\documentclass[a4paper, 10pt]{article}[5.10.2011]
+
+%% packages
+\usepackage[left=2cm, text={17cm, 24cm}, top=3cm]{geometry}		% rozmery stránky
+\usepackage[czech]{babel}
+\usepackage[latin2]{inputenc}
+\usepackage[IL2]{fontenc}
+\usepackage{colortbl}
+\usepackage{listings}
+\usepackage{lineno}
+
+
+
+\newcommand{\czuv}[1]{\quotedblbase #1\textquotedblleft}
+\renewcommand\lstlistingname{Pseudokód}
+\renewcommand\lstlistlistingname{Pseudokód}
+\def\lstlistingname{Pseudokód}
+\lstset{ %
+language=C,                   % the language of the code
+basicstyle=\footnotesize,       % the size of the fonts that are used for the code
+numbers=left,                   % where to put the line-numbers
+numberstyle=\footnotesize,      % the size of the fonts that are used for the line-numbers
+stepnumber=1,                   % the step between two line-numbers. If it's 1, each line 
+                                % will be numbered
+numbersep=-10pt,                % how far the line-numbers are from the code
+backgroundcolor=\color{white},  % choose the background color. You must add \usepackage{color}
+showspaces=false,               % show spaces adding particular underscores
+showstringspaces=false,         % underline spaces within strings
+showtabs=false,                 % show tabs within strings adding particular underscores
+frame=tb,                       % adds a frame around the code
+tabsize=2,                      % sets default tabsize to 2 spaces
+captionpos=b,                   % sets the caption-position to bottom
+breaklines=true,                % sets automatic line breaking
+breakatwhitespace=false,        % sets if automatic breaks should only happen at whitespace
+title=\lstname,                 % show the filename of files included with \lstinputlisting;
+                                % also try caption instead of title
+escapeinside={\%*}{*)},         % if you want to add a comment within your code
+morekeywords={CODE,..., fakulta},            % if you want to add more keywords to the set
+commentstyle=\color{gray}\upshape
+}
+
+\definecolor{gray}{rgb}{0.4,0.4,0.4}
+\definecolor{darkblue}{rgb}{0.0,0.0,0.6}
+\definecolor{cyan}{rgb}{0.0,0.6,0.6}
+\lstdefinelanguage{C}
+{
+  morestring=[b]",
+  morestring=[s]{>}{<},
+  morecomment=[s]{/*}{*/},
+  stringstyle=\color{black},
+  identifierstyle=\color{darkblue},
+  keywordstyle=\color{cyan},
+  morekeywords={CODE,version,type, fakulty, titul, to, from, id, node}% list your attributes here
+}
+
+
+% =======================================================================
+% balíèek "hyperref" vytváøí klikací odkazy v pdf, pokud tedy pou¾ijeme pdflatex
+% problém je, ¾e balíèek hyperref musí být uveden jako poslední, tak¾e nemù¾e
+% být v ¹ablonì
+
+  \usepackage{color}
+  \usepackage[unicode,colorlinks,hyperindex,plainpages=false,pdftex]{hyperref}
+  \definecolor{links}{rgb}{0.4,0.5,0}
+  \definecolor{anchors}{rgb}{1,0,0}
+  \def\AnchorColor{anchors}
+  \def\LinkColor{links}
+  \def\pdfBorderAttrs{/Border [0 0 0] }  % bez okrajù kolem odkazù
+  \pdfcompresslevel=9
+
+
+
+
+
+
+\title{Paralelní a distribuované algoritmy\,--\,dokumentace \\Pipeline merge sort}
+\author{Bc. Jaroslav Sendler, xsendl00\\ xsendl00@stud.fit.vutbr.cz}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\noindent Dokumentace k 1.projektu do pøedmìtu Paralelní a distribuované algoritmy (PRL). Obsahuje popis zadání, rozbor a analýzu algoritmu Pipeline merge sort. V závìru dokumentu se nachází komunikaèní protokol mezi \czuv{procesory} (zpùsob zasílání zpráv). Pro vizualizaci je vyu¾it sekvenèní diagram.
+\section*{Zadání}
+Pomocí knihovny Open MPI implementujte algoritmus \textbf{Pipeline merge sort}.
+\begin{description}
+ \item[Vstup:] Soubor \czuv{numbers} obsahující èísla velikosti 1 byte, která jdou bez mezery za sebou.
+ \item[Výstup:] Výstup na \textit{stdout} se skládá ze dvou èástí:
+\begin{itemize}
+ \item Jednotlivé naètené hodnoty v jednom øádku oddìlené mezerou (vypsat po naètení prvním procesorem).
+ \item Jednotlivé seøazené hodnoty oddìlené novým øádkem (od nejmen¹ího po nejvìt¹í).
+\end{itemize}
+\end{description}
+\begin{description}
+ \item[Postup:] Vytvoøte testovací skript \textit{test}, který bude øídit testování. Skript bude mít následující vlastnosti:
+\begin{itemize}
+ \item Bude pojmenován \textit{test} nebo \textit{test.sh}.
+ \item Bude pøijímat 1 parametr a to \textit{pocet\_hodnot}.
+\end{itemize}
+ Skript vytvoøí podle velikosti parametru \textit{pocet\_hodnot} soubor \textit{numbers} s náhodnými èísly a následnì spustí program s poètem procesorù \textit{$log_2(pocet\_hodnot)+1$}. Skript nakonec sma¾e vytvoøený binární soubor a soubor \textit{numbers}. Vzhledem ke strojové kontrole výsledkù se v odevzdané verzi kódu nebudou vyskytovat ¾ádné jiné výstupy ne¾ uvedené a ze stejných dùvodù je tøeba dodr¾et vý¹e uvedené body týkající se testovacího skriptu. Za nedodr¾ení tìchto po¾adavkù budou strhávány body.
+\end{description}
+
+\section*{Rozbor a analýza algoritmu}
+Algoritmus Pipeline merge sort pracuje s lineárním  polem procesorù $p(n) = \log n + 1$, kde $n$ je poèet prvkù urèených k seøazení a $+ 1$ znaèí první procesor, který naèítá vstupní data. 
+\begin{description}
+ \item[Základní body algoritmu:]
+\begin{itemize}
+ \item Data nejsou ulo¾ena v procesorech, ale postupnì do nich vstupují.
+ \item Ka¾dý procesor spojuje dvì seøazené posloupnosti délky $2^{i-2}$.
+ \item Procesor $P_i$ zaène, kdy¾ má na jednom vstupu posloupnost délky $2^{i-2}$ a na druhém $1$, tedy zaène $2^{i-2} +1$ cyklù po procesoru $P_{i-1}$.
+ \item $P_i$ zaène v cyklu $$1 + \sum^{i-2}_{j=0} 2^j + 1 = 2^{i-1} + i -1$$.
+ \item $P_i$ skonèí v cyklu $(n-1) + 2^{i-1} + i - 1$.
+ \item Celý algoritmus skonèí po $2n + \log n - 1$ cyklech.
+\end{itemize}
+\end{description}
+\subsection*{Slovní popis algoritmu}
+
+\section*{Teoretická slo¾itost algoritmu}
+\begin{description}
+ \item[èasová slo¾itost:] $2n + \log n - 1$ cyklù, kde $n$ je poèet prvkù k seøazení\\tedy \textbf{t($n$) = O($n$)}
+ \item[cena:] $t(n).p(n) = O(n).(\log n + 1)$, kde $p(n)$ je poèet \czuv{procesorù}\\tedy \textbf{c($n$) = O($n*\log n$)}, co¾ je optimální
+\end{description}
+
+\section*{Namìøené hodnoty}
+V tabulce \ref{} jsou zobrazeny výsledky namìøené pøi experimentování s posloupnostmi rùzných délek.
+\section*{Komunikaèní protokol}
+\begin{figure}[ht]
+\scriptsize\begin{verbatim}                                                                                                  
+  BITMAPOVÁ HLAVIÈKA                                   INFORMAÈNÍ HLAVIÈKA
+
+        32 bit      Popis Pole                              32 bit       Popis Pole
+     +---------+                                          +---------+
+  0  |    |         Typ souboru (0x4D42) - BM          0  |         |    Velikost hlavièky (0x28)
+     +---------+                                          +---------+
+  1  |         |    Velikost souboru                   1  |         |    ©íøka obrázku (px)
+     +---------+                                          +---------+
+  2  |    |    |    Rezervováno 1 a 2 (0x00) (0x00)    2  |         |    Vý¹ka obrázku (px)
+     +---------+                                          +---------+
+  3  |         |    Offset poèátku bit. dat            3  |    |    |    Poèet rovin (0x01), bity na pixel (0x08)
+     +---------+                                          +---------+
+                                                       4  |         |    Kompresní metoda (0x00) - není pou¾ita
+                                                          +---------+
+                                                       5  |         |    Velikost bitmapy
+                                                          +---------+
+                                                       6  |         |    X pixel na metr (0x0B13)
+                                                          +---------+
+                                                       7  |         |    Y pixel na metr (0x0B13)
+                                                          +---------+
+                                                       8  |         |    Poèet barev v obrázku (0x00)
+                                                          +---------+
+                                                       9  |         |    Poèet dùle¾itých barev v obrázku (0x00)
+                                                          +---------+
+\end{verbatim}
+\caption{Pøehled hlavièek obrázku formátu BMP verze 3.}
+\label{pic}
+\end{figure}
+
+\normalsize
+\end{document}
