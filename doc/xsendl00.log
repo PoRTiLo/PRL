@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2012.2.5)  31 MAR 2012 19:47
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2012.2.5)  1 APR 2012 14:16
 entering extended mode
  %&-line parsing enabled.
 **xsendl00
@@ -115,57 +115,6 @@ File: pdftex.def 2010/03/12 v0.04p Graphics/color for pdfTeX
 \everycr=\toks19
 \minrowclearance=\skip45
 )
-(/usr/share/texmf-texlive/tex/latex/listings/listings.sty
-\lst@mode=\count93
-\lst@gtempboxa=\box26
-\lst@token=\toks20
-\lst@length=\count94
-\lst@currlwidth=\dimen110
-\lst@column=\count95
-\lst@pos=\count96
-\lst@lostspace=\dimen111
-\lst@width=\dimen112
-\lst@newlines=\count97
-\lst@lineno=\count98
-\lst@maxwidth=\dimen113
-
-(/usr/share/texmf-texlive/tex/latex/listings/lstmisc.sty
-File: lstmisc.sty 2007/02/22 1.4 (Carsten Heinz)
-\c@lstnumber=\count99
-\lst@skipnumbers=\count100
-\lst@framebox=\box27
-)
-(/usr/share/texmf-texlive/tex/latex/listings/listings.cfg
-File: listings.cfg 2007/02/22 1.4 listings configuration
-))
-Package: listings 2007/02/22 1.4 (Carsten Heinz)
-
-(/usr/share/texmf-texlive/tex/latex/lineno/lineno.sty
-Package: lineno 2005/11/02 line numbers on paragraphs v4.41
-\linenopenalty=\count101
-\output=\toks21
-\linenoprevgraf=\count102
-\linenumbersep=\dimen114
-\linenumberwidth=\dimen115
-\c@linenumber=\count103
-\c@pagewiselinenumber=\count104
-\c@LN@truepage=\count105
-\c@internallinenumber=\count106
-\c@internallinenumbers=\count107
-\quotelinenumbersep=\dimen116
-\bframerule=\dimen117
-\bframesep=\dimen118
-\bframebox=\box28
-LaTeX Info: Redefining \\ on input line 3056.
-)
-(/usr/share/texmf-texlive/tex/latex/listings/lstlang1.sty
-File: lstlang1.sty 2004/09/05 1.3 listings language file
-)
-(/usr/share/texmf-texlive/tex/latex/listings/lstmisc.sty
-File: lstmisc.sty 2007/02/22 1.4 (Carsten Heinz)
-)
-Package color Info: Redefining color cyan on input line 44.
-
 (/usr/share/texmf-texlive/tex/latex/hyperref/hyperref.sty
 Package: hyperref 2009/10/09 v6.79a Hypertext links for LaTeX
 
@@ -179,9 +128,9 @@ O)
 (/usr/share/texmf-texlive/tex/latex/oberdiek/xcolor-patch.sty
 Package: xcolor-patch 2009/10/02 xcolor patch
 ))
-\@linkdim=\dimen119
-\Hy@linkcounter=\count108
-\Hy@pagecounter=\count109
+\@linkdim=\dimen110
+\Hy@linkcounter=\count93
+\Hy@pagecounter=\count94
 
 (/usr/share/texmf-texlive/tex/latex/hyperref/pd1enc.def
 File: pd1enc.def 2009/10/09 v6.79a Hyperref: PDFDocEncoding definition (HO)
@@ -254,10 +203,10 @@ Package pdftexcmds Info: LuaTeX not detected.
 Package pdftexcmds Info: \pdf@primitive is available.
 Package pdftexcmds Info: \pdf@ifprimitive is available.
 )))
-\Fld@menulength=\count110
-\Field@Width=\dimen120
-\Fld@charsize=\dimen121
-\Field@toks=\toks22
+\Fld@menulength=\count95
+\Field@Width=\dimen111
+\Fld@charsize=\dimen112
+\Field@toks=\toks20
 Package hyperref Info: Hyper figures OFF on input line 4377.
 Package hyperref Info: Link nesting OFF on input line 4382.
 Package hyperref Info: Hyper index ON on input line 4385.
@@ -269,35 +218,35 @@ Package hyperref Info: PDF/A mode OFF on input line 4407.
 (/usr/share/texmf-texlive/tex/generic/oberdiek/atbegshi.sty
 Package: atbegshi 2008/07/31 v1.9 At begin shipout hook (HO)
 )
-\Hy@abspage=\count111
-\c@Item=\count112
-\c@Hfootnote=\count113
+\Hy@abspage=\count96
+\c@Item=\count97
+\c@Hfootnote=\count98
 )
 *hyperref using driver hpdftex*
 (/usr/share/texmf-texlive/tex/latex/hyperref/hpdftex.def
 File: hpdftex.def 2009/10/09 v6.79a Hyperref driver for pdfTeX
-\Fld@listcount=\count114
+\Fld@listcount=\count99
 ) (./xsendl00.aux)
 \openout1 = `xsendl00.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 80.
-LaTeX Font Info:    ... okay on input line 80.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 80.
-LaTeX Font Info:    ... okay on input line 80.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 80.
-LaTeX Font Info:    ... okay on input line 80.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 80.
-LaTeX Font Info:    ... okay on input line 80.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 80.
-LaTeX Font Info:    ... okay on input line 80.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 80.
-LaTeX Font Info:    ... okay on input line 80.
-LaTeX Font Info:    Checking defaults for IL2/cmr/m/n on input line 80.
-LaTeX Font Info:    ... okay on input line 80.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 80.
-LaTeX Font Info:    ... okay on input line 80.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 80.
-LaTeX Font Info:    ... okay on input line 80.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 41.
+LaTeX Font Info:    ... okay on input line 41.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 41.
+LaTeX Font Info:    ... okay on input line 41.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 41.
+LaTeX Font Info:    ... okay on input line 41.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 41.
+LaTeX Font Info:    ... okay on input line 41.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 41.
+LaTeX Font Info:    ... okay on input line 41.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 41.
+LaTeX Font Info:    ... okay on input line 41.
+LaTeX Font Info:    Checking defaults for IL2/cmr/m/n on input line 41.
+LaTeX Font Info:    ... okay on input line 41.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 41.
+LaTeX Font Info:    ... okay on input line 41.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 41.
+LaTeX Font Info:    ... okay on input line 41.
 
 *geometry auto-detecting driver*
 *geometry detected driver: pdftex*
@@ -342,89 +291,82 @@ driver: pdftex
 -----------------------
 (/usr/share/texmf-texlive/tex/context/base/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count115
-\scratchdimen=\dimen122
-\scratchbox=\box29
-\nofMPsegments=\count116
-\nofMParguments=\count117
-\everyMPshowfont=\toks23
-\MPscratchCnt=\count118
-\MPscratchDim=\dimen123
-\MPnumerator=\count119
-\everyMPtoPDFconversion=\toks24
+\scratchcounter=\count100
+\scratchdimen=\dimen113
+\scratchbox=\box26
+\nofMPsegments=\count101
+\nofMParguments=\count102
+\everyMPshowfont=\toks21
+\MPscratchCnt=\count103
+\MPscratchDim=\dimen114
+\MPnumerator=\count104
+\everyMPtoPDFconversion=\toks22
 )
-\c@lstlisting=\count120
-Package hyperref Info: Link coloring ON on input line 80.
+Package hyperref Info: Link coloring ON on input line 41.
  (/usr/share/texmf-texlive/tex/latex/hyperref/nameref.sty
 Package: nameref 2007/05/29 v2.31 Cross-referencing by name of section
 
 (/usr/share/texmf-texlive/tex/latex/oberdiek/refcount.sty
 Package: refcount 2008/08/11 v3.1 Data extraction from references (HO)
 )
-\c@section@level=\count121
+\c@section@level=\count105
 )
-LaTeX Info: Redefining \ref on input line 80.
-LaTeX Info: Redefining \pageref on input line 80.
+LaTeX Info: Redefining \ref on input line 41.
+LaTeX Info: Redefining \pageref on input line 41.
  (./xsendl00.out)
 (./xsendl00.out)
 \@outlinefile=\write3
 \openout3 = `xsendl00.out'.
 
-\AtBeginShipoutBox=\box30
+\AtBeginShipoutBox=\box27
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <12> on input line 82.
+(Font)              <12> on input line 43.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <8> on input line 82.
+(Font)              <8> on input line 43.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 82.
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 90.
+(Font)              <6> on input line 43.
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 51.
  (/usr/share/texmf-texlive/tex/latex/base/omscmr.fd
 File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 90.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 51.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <7> on input line 100.
+(Font)              <7> on input line 61.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <5> on input line 100.
+(Font)              <5> on input line 61.
  [1
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
-
-LaTeX Warning: Reference `' on page 2 undefined on input line 125.
-
-LaTeX Font Info:    Try loading font information for IL2+cmtt on input line 128
+LaTeX Font Info:    Try loading font information for IL2+cmtt on input line 111
 .
+
 (/usr/share/texmf-texlive/tex/latex/cslatex/il2cmtt.fd
 File: il2cmtt.fd 1997/08/20 CSLaTeX font definitions
-) [2] (./xsendl00.aux)
-
-LaTeX Warning: There were undefined references.
-
- ) 
+) [2] [3] (./xsendl00.aux) ) 
 Here is how much of TeX's memory you used:
- 7978 strings out of 493848
- 109990 string characters out of 1152824
- 202719 words of memory out of 3000000
- 11146 multiletter control sequences out of 15000+50000
+ 6395 strings out of 493848
+ 87131 string characters out of 1152824
+ 181717 words of memory out of 3000000
+ 9583 multiletter control sequences out of 15000+50000
  11845 words of font info for 33 fonts, out of 3000000 for 9000
  714 hyphenation exceptions out of 8191
- 38i,7n,49p,546b,419s stack positions out of 5000i,500n,10000p,200000b,50000s
-</usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/sha
-re/texmf-texlive/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texmf-te
-xlive/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/share/texmf-texlive/fonts/
-type1/public/amsfonts/cm/cmr10.pfb></usr/share/texmf-texlive/fonts/type1/public
-/amsfonts/cm/cmr7.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/
-cmsy10.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmsy7.pfb><
-/usr/share/texmf-texlive/fonts/type1/public/cs/csbx10.pfb></usr/share/texmf-tex
-live/fonts/type1/public/cs/csbx12.pfb></usr/share/texmf-texlive/fonts/type1/pub
-lic/cs/csr10.pfb></usr/share/texmf-texlive/fonts/type1/public/cs/csr12.pfb></us
-r/share/texmf-texlive/fonts/type1/public/cs/csr17.pfb></usr/share/texmf-texlive
-/fonts/type1/public/cs/csti10.pfb></usr/share/texmf-texlive/fonts/type1/public/
-cs/cstt8.pfb>
-Output written on xsendl00.pdf (2 pages, 134670 bytes).
+ 38i,10n,36p,546b,349s stack positions out of 5000i,500n,10000p,200000b,50000s
+</usr/share/texmf-texlive/fonts/type1/public/amsfon
+ts/cm/cmex10.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmmi1
+0.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/
+share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texmf-
+texlive/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/share/texmf-texlive/fonts
+/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texmf-texlive/fonts/type1/publ
+ic/amsfonts/cm/cmsy7.pfb></usr/share/texmf-texlive/fonts/type1/public/cs/csbx10
+.pfb></usr/share/texmf-texlive/fonts/type1/public/cs/csbx12.pfb></usr/share/tex
+mf-texlive/fonts/type1/public/cs/csr10.pfb></usr/share/texmf-texlive/fonts/type
+1/public/cs/csr12.pfb></usr/share/texmf-texlive/fonts/type1/public/cs/csr17.pfb
+></usr/share/texmf-texlive/fonts/type1/public/cs/csti10.pfb></usr/share/texmf-t
+exlive/fonts/type1/public/cs/cstt9.pfb>
+Output written on xsendl00.pdf (3 pages, 135607 bytes).
 PDF statistics:
- 80 PDF objects out of 1000 (max. 8388607)
- 10 named destinations out of 1000 (max. 500000)
- 1 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 103 PDF objects out of 1000 (max. 8388607)
+ 12 named destinations out of 1000 (max. 500000)
+ 41 words of extra memory for PDF output out of 10000 (max. 10000000)
 

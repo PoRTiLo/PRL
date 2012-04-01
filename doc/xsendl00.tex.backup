@@ -81,7 +81,7 @@ commentstyle=\color{gray}\upshape
 \maketitle
 
 \noindent Dokumentace k 1.projektu do pøedmìtu Paralelní a distribuované algoritmy (PRL). Obsahuje popis zadání, rozbor a analýzu algoritmu Pipeline merge sort. V závìru dokumentu se nachází komunikaèní protokol mezi \czuv{procesory} (zpùsob zasílání zpráv). Pro vizualizaci je vyu¾it sekvenèní diagram.
-\section*{Zadání}
+\section{Zadání}
 Pomocí knihovny Open MPI implementujte algoritmus \textbf{Pipeline merge sort}.
 \begin{description}
  \item[Vstup:] Soubor \czuv{numbers} obsahující èísla velikosti 1 byte, která jdou bez mezery za sebou.
@@ -100,77 +100,86 @@ Pomocí knihovny Open MPI implementujte algoritmus \textbf{Pipeline merge sort}.
  Skript vytvoøí podle velikosti parametru \textit{pocet\_hodnot} soubor \textit{numbers} s náhodnými èísly a následnì spustí program s poètem procesorù \textit{$log_2(pocet\_hodnot)+1$}. Skript nakonec sma¾e vytvoøený binární soubor a soubor \textit{numbers}. Vzhledem ke strojové kontrole výsledkù se v odevzdané verzi kódu nebudou vyskytovat ¾ádné jiné výstupy ne¾ uvedené a ze stejných dùvodù je tøeba dodr¾et vý¹e uvedené body týkající se testovacího skriptu. Za nedodr¾ení tìchto po¾adavkù budou strhávány body.
 \end{description}
 
-\section*{Rozbor a analýza algoritmu}
+\section{Rozbor a analýza algoritmu}
 Algoritmus Pipeline merge sort pracuje s lineárním  polem procesorù $p(n) = \log n + 1$, kde $n$ je poèet prvkù urèených k seøazení a $+ 1$ znaèí první procesor, který naèítá vstupní data. 
 \begin{description}
  \item[Základní body algoritmu:]
 \begin{itemize}
+ \item
  \item Data nejsou ulo¾ena v procesorech, ale postupnì do nich vstupují.
- \item Ka¾dý procesor spojuje dvì seøazené posloupnosti délky $2^(i-2)$.
- \item 
- \item 
- \item 
+ \item Ka¾dý procesor spojuje dvì seøazené posloupnosti délky $2^{i-2}$.
+ \item Procesor $P_i$ zaène, kdy¾ má na jednom vstupu posloupnost délky $2^{i-2}$ a na druhém $1$, tedy zaène $2^{i-2} +1$ cyklù po procesoru $P_{i-1}$.
+ \item $P_i$ zaène v cyklu $$1 + \sum^{i-2}_{j=0} 2^j + 1 = 2^{i-1} + i -1$$.
+ \item $P_i$ skonèí v cyklu $(n-1) + 2^{i-1} + i - 1$.
+ \item Celý algoritmus skonèí po $2n + \log n - 1$ cyklech.
 \end{itemize}
 \end{description}
+\subsection*{Rozbor algoritmu}
+Algoritmus Pipeline merge sort pracuje s $\log_2(n) + 1$. Ka¾dý pracovní (vyjma prvního) z procesorù obsahuje dvì fronty s maximální délkou \textit{i}, kde \textit{i} je èíslo procesoru ($i >= 1$). Tedy pro druhý procesor $P_2 = 2$, tøetí $P_3 = 3$, ètvrtý $P_4 = 4$ a tak dále. Algoritmus zaèíná první procesor, který naèítá vstupní èísla a po jednom (bez porovnání) je zasílá druhému procesoru. Ten je ihned pøijímá a na støídaèku je ukládá do první nebo do druhé fronty. 
 
+Pøi naplnìní front správným poètem prvkù (u $P_{2}1 >= 1$ a $P_{2}2 >= 1$) zaèínají pracovní procesory tøídit data. Porovnávají se dvì èísla, jedno z první fronty, druhé z druhé fronty, a dle zadání se buï men¹í z nich nebo vìt¹í za¹le vedlej¹ímu procesoru. Ten jej pøijme a takté¾ ukládá do front. Porovnávat zaène pøi splnìní døíve uvedených podmínek. Tímto zpùsobem pracují v¹echny procesory.
 
-\subsection*{Teoretická slo¾itost algoritmu}
+Výjimkou je poslední procesor, který pøi naplnìní jedné fronty a druhé o obsahu alespoò jednoho èísla zaèíná porovnávat a výsledek (seøazená èísla) tiskne na standardní výstup. Pøi situaci, kdy má jednu frontu prázdnou, tak druhá obsahuje ji¾ seøazenou posloupnost prvkù, a proto jsou postupnì její prvky bez dal¹ích operací poslány na výstup.
+\section{Teoretická slo¾itost algoritmu}
 \begin{description}
  \item[èasová slo¾itost:] $2n + \log n - 1$ cyklù, kde $n$ je poèet prvkù k seøazení\\tedy \textbf{t($n$) = O($n$)}
  \item[cena:] $t(n).p(n) = O(n).(\log n + 1)$, kde $p(n)$ je poèet \czuv{procesorù}\\tedy \textbf{c($n$) = O($n*\log n$)}, co¾ je optimální
 \end{description}
 
-
-
-Ní¾e uvedené schéma \ref{pic} reprezentuje pou¾ité struktury v obrázku. První je Bitmapová hlavièka, která je následována Informaèní hlavièkou. Zbytek souboru tvoøí bitmapová data. V závorkách na koncích popisu schématu jsou uvedena data (nemìnná), je¾ jsou pou¾ita u ka¾dého obrázku generovaného touto knihovnou.
-\begin{figure}[ht]
-\scriptsize\begin{verbatim}                                                                                                  
-  BITMAPOVÁ HLAVIÈKA                                   INFORMAÈNÍ HLAVIÈKA
-
-        32 bit      Popis Pole                              32 bit       Popis Pole
-     +---------+                                          +---------+
-  0  |    |         Typ souboru (0x4D42) - BM          0  |         |    Velikost hlavièky (0x28)
-     +---------+                                          +---------+
-  1  |         |    Velikost souboru                   1  |         |    ©íøka obrázku (px)
-     +---------+                                          +---------+
-  2  |    |    |    Rezervováno 1 a 2 (0x00) (0x00)    2  |         |    Vý¹ka obrázku (px)
-     +---------+                                          +---------+
-  3  |         |    Offset poèátku bit. dat            3  |    |    |    Poèet rovin (0x01), bity na pixel (0x08)
-     +---------+                                          +---------+
-                                                       4  |         |    Kompresní metoda (0x00) - není pou¾ita
-                                                          +---------+
-                                                       5  |         |    Velikost bitmapy
-                                                          +---------+
-                                                       6  |         |    X pixel na metr (0x0B13)
-                                                          +---------+
-                                                       7  |         |    Y pixel na metr (0x0B13)
-                                                          +---------+
-                                                       8  |         |    Poèet barev v obrázku (0x00)
-                                                          +---------+
-                                                       9  |         |    Poèet dùle¾itých barev v obrázku (0x00)
-                                                          +---------+
-\end{verbatim}
-\caption{Pøehled hlavièek obrázku formátu BMP verze 3.}
-\label{pic}
-\end{figure}
-\section*{Komunikaèní protokol}
-\normalsize
-Aplikace je konzolového charakteru, s u¾ivatelem komunikuje pomocí poèáteèních vstupních parametrù pøíkazové øádky uvedených v tabulce \ref{tab1}.
+\section{Namìøené hodnoty}
+V tabulce \ref{tab1} je zobrazena závislot mezi poètem prvkù urèených k seøazení a èasem potøebným k jejich seøazení. Výsledky byly zji¹tìny pøi experimentování s posloupnostmi rùzných délek.
 \begin{table}[ht]
 \begin{center}
-\begin{tabular}{ r  l  l} 
-\rowcolor[gray]{0.9}
-\textbf{pøepínaè}	& \textbf{parametr}	& \textbf{popis} \\
--i			& $<$ifile$>$		& vstupní soubor obrázku, pokud parametr není vstup je STDIN \\
--o			& $<$ofile$>$		& výstupní soubor obrázku, pokud parametr není výstup je STDOUT \\
--l			& $<$logfile$>$		& vypí¹e informace o loginu, velikosti vstupního obrázku a výstupního\\
--h			&			& vypí¹e nápovìdu na standardní výstup, ukonèí aplikaci\\ \hline
+\begin{tabular}{ l | c c c c c c c c c c} 
+%\rowcolor[gray]{0.9}
+\hline
+\textbf{poèet prvkù}	& 2 & 4 & 8 & 16 & 32 & 64 & 128 & 256 & 512 & 1024\\
+\textbf{èas[s]}		&   &   &   &    &    &    &     &     &     &\\ \hline
 \end{tabular}
-\caption{Pøehled vstupních parametrù pøíkazové øádku.}
+\caption{Pøehled namìøených èasù v závisloti na poètu prvkù.}
 \label{tab1}
 \end{center} 
 \end{table}
+\section{Komunikaèní protokol}
+Na obrázku \ref{pic} zobrazeném ní¾e je pomocí sekvenèního diagramu znázornìna komunikace mezi jednotlivými procesory. Pro zjednodu¹ení a lep¹í pøehlednost je jako vstup pro Pipeline merge sort algoritmu pou¾ito 8 neseøazených èísel. Tedy poèet procesorù je $\log_2(8)+1$ co¾ je 4.
 
-Pro zpracování vstupních parametrù byla pou¾ita funkce getop.
+V samotném diagramu jsou pou¾ity následující zkratky: è $->$ èíslo, f $->$ fronta, $<>$ $->$ porovnání dvou èísel.
+\begin{figure}[ht]
+\small\begin{verbatim}
++-------------+           +-------------+            +-------------+            +-------------+
++ 1. Procesor +           + 2. Procesor +            + 3. Procesor +            + 4. Procesor +
++-------------+           +-------------+            +-------------+            +-------------+
 
+       |   1.èíslo do 1.fronty   |                          |                          |
+       |------------------------>|                          |                          |
+       |   2.èíslo do 2.fronty   |                          |                          |
+       |------------------------>|                          |                          |
+       |   3.èíslo do 1.fronty   |   men¹í è. z <> do 1.f   |                          |
+       |------------------------>|------------------------->|                          |
+       |   4.èíslo do 2.fronty   |   zbylé è. z <> do 1.f   |                          |
+       |------------------------>|------------------------->|                          |
+       |   5.èíslo do 1.fronty   |   men¹í è. z <> do 2.f   |                          |
+       |------------------------>|------------------------->|------------------------->|
+       |   6.èíslo do 2.fronty   |   zbylé è. z <> do 2.f   |   men¹í è. z <> do 1.f   |
+       |------------------------>|------------------------->|------------------------->|
+       |   7.èíslo do 1.fronty   |   men¹í è. z <> do 1.f   |   men¹í è. z <> do 1.f   |
+       |------------------------>|------------------------->|------------------------->|
+       |   8.èíslo do 2.fronty   |   zbylé è. z <> do 1.f   |   men¹í è. z <> do 1.f   |
+       |------------------------>|------------------------->|------------------------->|
+       |                         |   men¹í è. z <> do 2.f   |   zbylé è. z <> do 1.f   |
+       |                         |------------------------->|------------------------->|
+       |                         |   zbylé è. z <> do 2.f   |   men¹í è. z <> do 2.f   |
+       |                         |------------------------->|------------------------->|
+       |                         |                          |   men¹í è. z <> do 2.f   |
+       |                         |                          |------------------------->|
+       |                         |                          |   men¹í è. z <> do 2.f   |
+       |                         |                          |------------------------->|
+       |                         |                          |   zbylé è. z <> do 2.f   |
+       |                         |                          |------------------------->|
+\end{verbatim}
+\caption{Pøíklad komunikace 4 procesorù v algoritmu Pipeline merge sort.}
+\label{pic}
+\end{figure}
+
+\normalsize
 \end{document}
