@@ -7,7 +7,7 @@
 \usepackage[IL2]{fontenc}
 \usepackage{colortbl}
 
-
+\usepackage{graphicx}
 
 \newcommand{\czuv}[1]{\quotedblbase #1\textquotedblleft}
 
@@ -69,14 +69,15 @@ Algoritmus Pipeline merge sort pracuje s lineárním  polem procesorù $p(n) = \log
  \item
  \item Data nejsou ulo¾ena v procesorech, ale postupnì do nich vstupují.
  \item Ka¾dý procesor spojuje dvì seøazené posloupnosti délky $2^{i-2}$.
- \item Procesor $P_i$ zaène, kdy¾ má na jednom vstupu posloupnost délky $2^{i-2}$ a na druhém $1$, tedy zaène $2^{i-2} +1$ cyklù po procesoru $P_{i-1}$.
+ \item Procesor $P_i$ se spustí, kdy¾ má na jednom vstupu posloupnost délky $2^{i-2}$ a na druhém $1$, tedy zaène $2^{i-2} +1$ cyklù po procesoru $P_{i-1}$.
  \item $P_i$ zaène v cyklu $$1 + \sum^{i-2}_{j=0} 2^j + 1 = 2^{i-1} + i -1$$.
  \item $P_i$ skonèí v cyklu $(n-1) + 2^{i-1} + i - 1$.
  \item Celý algoritmus skonèí po $2n + \log n - 1$ cyklech.
 \end{itemize}
 \end{description}
+
 \subsection*{Rozbor algoritmu}
-Algoritmus Pipeline merge sort pracuje s $\log_2(n) + 1$. Ka¾dý pracovní (vyjma prvního) z procesorù obsahuje dvì fronty s maximální délkou \textit{i}, kde \textit{i} je èíslo procesoru ($i >= 1$). Tedy pro druhý procesor $P_2 = 2$, tøetí $P_3 = 3$, ètvrtý $P_4 = 4$ a tak dále. Algoritmus zaèíná první procesor, který naèítá vstupní èísla a po jednom (bez porovnání) je zasílá druhému procesoru. Ten je ihned pøijímá a na støídaèku je ukládá do první nebo do druhé fronty. 
+Algoritmus Pipeline merge sort pracuje s $\log_2(n) + 1$. Ka¾dý pracovní (vyjma prvního) z procesorù obsahuje dvì fronty s maximální délkou \textit{i}, kde \textit{i} je èíslo procesoru ($i >= 1$). Tedy pro druhý procesor $P_2 = 2$, tøetí $P_3 = 3$, ètvrtý $P_4 = 4$ a tak dále. Algoritmus zaèíná první procesor, který naèítá vstupní èísla a po jednom (bez porovnání) je zasílá druhému procesoru. Ten je ihned pøijímá a støídavì je ukládá do první nebo do druhé fronty. 
 
 Pøi naplnìní front správným poètem prvkù (u $P_{2}1 >= 1$ a $P_{2}2 >= 1$) zaèínají pracovní procesory tøídit data. Porovnávají se dvì èísla, jedno z první fronty, druhé z druhé fronty, a dle zadání se buï men¹í z nich nebo vìt¹í za¹le vedlej¹ímu procesoru. Toto porovnání 2. procesor dìlá pouze jednou, 3. procesor 2x, 4. 4x a tak dále. Ten jej pøijme a takté¾ ukládá do front. Porovnávat zaène pøi splnìní døíve uvedených podmínek. Tímto zpùsobem pracují v¹echny procesory.
 
@@ -90,19 +91,37 @@ Fronty jednotlivých pracovních procesorù obsahují po seøazení $n$-tice. Ka¾dý da
 \end{description}
 
 \section{Namìøené hodnoty}
-V tabulce \ref{tab1} je zobrazena závislot mezi poètem prvkù urèených k seøazení a èasem potøebným k jejich seøazení. Výsledky byly zji¹tìny pøi experimentování s posloupnostmi rùzných délek.
+V tabulce \ref{tab1} je zobrazena závislost mezi poètem vstupních prvkù a èasem potøebným k jejich seøazení. Výsledky byly zji¹tìny pøi experimentování s posloupnostmi rùzných délek. Pro ka¾dou hodnotu bylo provedeno 10 mìøení a následnì udìlán prùmìr. Mìøení probíhalo na ¹kolním serveru Merlin pomocí pøíkazu \textit{time} pøi vypnutých výpisech.Do výsledných hodnot není zapoèítáno generování vstupních prvkù pøíkazem \textit{dd}.
 \begin{table}[ht]
 \begin{center}
-\begin{tabular}{ l | c c c c c c c c c c} 
+\begin{tabular}{ l | c c c c c c c c c c } 
 %\rowcolor[gray]{0.9}
 \hline
-\textbf{poèet prvkù}	& 2 & 4 & 8 & 16 & 32 & 64 & 128 & 256 & 512 & 1024\\
-\textbf{èas[s]}		&   &   &   &    &    &    &     &     &     &\\ \hline
+\textbf{poèet prvkù}	& 2      & 4      & 8      & 16    & 32    & 64    & 128   & 256   & 512   \\
+\textbf{èas[s]}		& 0,066  & 0,105  & 0,145  & 0,171 & 0,176 & 0,186 & 0,205 & 0,324 & 0,386 \\ \hline
+\end{tabular}
+
+\end{center} 
+\begin{center}
+\begin{tabular}{ l | c c c c c c} 
+\hline
+\textbf{poèet prvkù}	& 1024  & 2048  & 4096  & 8192  & 16384 & 32768 \\
+\textbf{èas[s]}		& 0,441 & 0,772 & 1,176 & 2,379 & 4,715 & 4,921 \\ \hline
 \end{tabular}
 \caption{Pøehled namìøených èasù v závislosti na poètu prvkù.}
 \label{tab1}
 \end{center} 
 \end{table}
+
+Na obrázku \ref{pic} je graficky znázornìn vztah mezi poètem prvkù a èasem potøebným k jejich seøazení.
+\begin{figure}[ht]
+\begin{center}
+\includegraphics[scale=.8]{1.pdf}
+\caption{Závislost mezi poètem prvkù a èasem potøebným k jejich seøazení.}
+ \label{pic1}
+\end{center}
+\end{figure}
+
 \section{Komunikaèní protokol}
 Na obrázku \ref{pic} zobrazeném ní¾e je pomocí sekvenèního diagramu znázornìna komunikace mezi jednotlivými procesory. Pro zjednodu¹ení a lep¹í pøehlednost je jako vstup pro Pipeline merge sort algoritmu pou¾ito 8 neseøazených èísel. Tedy poèet procesorù je $\log_2(8)+1$ co¾ je 4.
 

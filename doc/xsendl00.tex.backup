@@ -6,52 +6,13 @@
 \usepackage[latin2]{inputenc}
 \usepackage[IL2]{fontenc}
 \usepackage{colortbl}
-\usepackage{listings}
-\usepackage{lineno}
 
-
+\usepackage{graphicx}
 
 \newcommand{\czuv}[1]{\quotedblbase #1\textquotedblleft}
-\renewcommand\lstlistingname{Pseudokód}
-\renewcommand\lstlistlistingname{Pseudokód}
-\def\lstlistingname{Pseudokód}
-\lstset{ %
-language=C,                   % the language of the code
-basicstyle=\footnotesize,       % the size of the fonts that are used for the code
-numbers=left,                   % where to put the line-numbers
-numberstyle=\footnotesize,      % the size of the fonts that are used for the line-numbers
-stepnumber=1,                   % the step between two line-numbers. If it's 1, each line 
-                                % will be numbered
-numbersep=-10pt,                % how far the line-numbers are from the code
-backgroundcolor=\color{white},  % choose the background color. You must add \usepackage{color}
-showspaces=false,               % show spaces adding particular underscores
-showstringspaces=false,         % underline spaces within strings
-showtabs=false,                 % show tabs within strings adding particular underscores
-frame=tb,                       % adds a frame around the code
-tabsize=2,                      % sets default tabsize to 2 spaces
-captionpos=b,                   % sets the caption-position to bottom
-breaklines=true,                % sets automatic line breaking
-breakatwhitespace=false,        % sets if automatic breaks should only happen at whitespace
-title=\lstname,                 % show the filename of files included with \lstinputlisting;
-                                % also try caption instead of title
-escapeinside={\%*}{*)},         % if you want to add a comment within your code
-morekeywords={CODE,..., fakulta},            % if you want to add more keywords to the set
-commentstyle=\color{gray}\upshape
-}
+
 
 \definecolor{gray}{rgb}{0.4,0.4,0.4}
-\definecolor{darkblue}{rgb}{0.0,0.0,0.6}
-\definecolor{cyan}{rgb}{0.0,0.6,0.6}
-\lstdefinelanguage{C}
-{
-  morestring=[b]",
-  morestring=[s]{>}{<},
-  morecomment=[s]{/*}{*/},
-  stringstyle=\color{black},
-  identifierstyle=\color{darkblue},
-  keywordstyle=\color{cyan},
-  morekeywords={CODE,version,type, fakulty, titul, to, from, id, node}% list your attributes here
-}
 
 
 % =======================================================================
@@ -114,12 +75,15 @@ Algoritmus Pipeline merge sort pracuje s lineárním  polem procesorù $p(n) = \log
  \item Celý algoritmus skonèí po $2n + \log n - 1$ cyklech.
 \end{itemize}
 \end{description}
+
 \subsection*{Rozbor algoritmu}
 Algoritmus Pipeline merge sort pracuje s $\log_2(n) + 1$. Ka¾dý pracovní (vyjma prvního) z procesorù obsahuje dvì fronty s maximální délkou \textit{i}, kde \textit{i} je èíslo procesoru ($i >= 1$). Tedy pro druhý procesor $P_2 = 2$, tøetí $P_3 = 3$, ètvrtý $P_4 = 4$ a tak dále. Algoritmus zaèíná první procesor, který naèítá vstupní èísla a po jednom (bez porovnání) je zasílá druhému procesoru. Ten je ihned pøijímá a na støídaèku je ukládá do první nebo do druhé fronty. 
 
-Pøi naplnìní front správným poètem prvkù (u $P_{2}1 >= 1$ a $P_{2}2 >= 1$) zaèínají pracovní procesory tøídit data. Porovnávají se dvì èísla, jedno z první fronty, druhé z druhé fronty, a dle zadání se buï men¹í z nich nebo vìt¹í za¹le vedlej¹ímu procesoru. Ten jej pøijme a takté¾ ukládá do front. Porovnávat zaène pøi splnìní døíve uvedených podmínek. Tímto zpùsobem pracují v¹echny procesory.
+Pøi naplnìní front správným poètem prvkù (u $P_{2}1 >= 1$ a $P_{2}2 >= 1$) zaèínají pracovní procesory tøídit data. Porovnávají se dvì èísla, jedno z první fronty, druhé z druhé fronty, a dle zadání se buï men¹í z nich nebo vìt¹í za¹le vedlej¹ímu procesoru. Toto porovnání 2. procesor dìlá pouze jednou, 3. procesor 2x, 4. 4x a tak dále. Ten jej pøijme a takté¾ ukládá do front. Porovnávat zaène pøi splnìní døíve uvedených podmínek. Tímto zpùsobem pracují v¹echny procesory.
 
 Výjimkou je poslední procesor, který pøi naplnìní jedné fronty a druhé o obsahu alespoò jednoho èísla zaèíná porovnávat a výsledek (seøazená èísla) tiskne na standardní výstup. Pøi situaci, kdy má jednu frontu prázdnou, tak druhá obsahuje ji¾ seøazenou posloupnost prvkù, a proto jsou postupnì její prvky bez dal¹ích operací poslány na výstup.
+
+Fronty jednotlivých pracovních procesorù obsahují po seøazení $n$-tice. Ka¾dý dal¹í procesor spojuje/seøazuje posloupnosti (obsah obou front) pøede¹lého procesoru.
 \section{Teoretická slo¾itost algoritmu}
 \begin{description}
  \item[èasová slo¾itost:] $2n + \log n - 1$ cyklù, kde $n$ je poèet prvkù k seøazení\\tedy \textbf{t($n$) = O($n$)}
@@ -127,19 +91,36 @@ Výjimkou je poslední procesor, který pøi naplnìní jedné fronty a druhé o obsahu 
 \end{description}
 
 \section{Namìøené hodnoty}
-V tabulce \ref{tab1} je zobrazena závislot mezi poètem prvkù urèených k seøazení a èasem potøebným k jejich seøazení. Výsledky byly zji¹tìny pøi experimentování s posloupnostmi rùzných délek.
+V tabulce \ref{tab1} je zobrazena závislot mezi poètem prvkù urèených k seøazení a èasem potøebným k jejich seøazení. Výsledky byly zji¹tìny pøi experimentování s posloupnostmi rùzných délek. Pro ka¾dou hodnotu bzlo provedeno 10 mìøení a následnì udìlán prùmìr. Probíhalo na ¹kolním serveru Merlin a pomocí pøíkazu \textit{time} pøi vypnutých výpisech a a¾ po vygenorování vstupních prvkù pøíkazu \textit{dd}.
 \begin{table}[ht]
 \begin{center}
-\begin{tabular}{ l | c c c c c c c c c c} 
+\begin{tabular}{ l | c c c c c c c c c c } 
 %\rowcolor[gray]{0.9}
 \hline
-\textbf{poèet prvkù}	& 2 & 4 & 8 & 16 & 32 & 64 & 128 & 256 & 512 & 1024\\
-\textbf{èas[s]}		&   &   &   &    &    &    &     &     &     &\\ \hline
+\textbf{poèet prvkù}	& 2      & 4      & 8      & 16    & 32    & 64    & 128   & 256   & 512   \\
+\textbf{èas[s]}		& 0,066  & 0,105  & 0,145  & 0,171 & 0,176 & 0,186 & 0,205 & 0,324 & 0,386 \\ \hline
 \end{tabular}
-\caption{Pøehled namìøených èasù v závisloti na poètu prvkù.}
+
+\end{center} 
+\begin{center}
+\begin{tabular}{ l | c c c c c c} 
+\hline
+\textbf{poèet prvkù}	& 1024  & 2048  & 4096  & 8192  & 16384 & 32768 \\
+\textbf{èas[s]}		& 0,441 & 0,772 & 1,176 & 2,379 & 4,715 & 4,921 \\ \hline
+\end{tabular}
+\caption{Pøehled namìøených èasù v závislosti na poètu prvkù - 2.èást.}
 \label{tab1}
 \end{center} 
 \end{table}
+
+\begin{figure}[ht]
+\begin{center}
+\includegraphics[scale=.8]{1.pdf}
+\caption{P.}
+ \label{pic}
+\end{center}
+\end{figure}
+
 \section{Komunikaèní protokol}
 Na obrázku \ref{pic} zobrazeném ní¾e je pomocí sekvenèního diagramu znázornìna komunikace mezi jednotlivými procesory. Pro zjednodu¹ení a lep¹í pøehlednost je jako vstup pro Pipeline merge sort algoritmu pou¾ito 8 neseøazených èísel. Tedy poèet procesorù je $\log_2(8)+1$ co¾ je 4.
 

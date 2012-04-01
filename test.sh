@@ -11,6 +11,5 @@ numbers=`echo "scale=2 ; l($numbers) / l(2)" | bc -l`					#vypocet poctu proceso
 #echo $numbers
 numbers=`echo "(($numbers+0.5)/1)+1" | bc`						      #zaokrouhleni na cela cisla +1
 #echo $numbers
-#mpirun --prefix /usr/local/share/OpenMPI -np $numbers xterm -e gdb pms			#spusteni
 mpirun --prefix /usr/local/share/OpenMPI -np $numbers ./pms			#spusteni
 rm -f pms numbers					                                    #uklid
